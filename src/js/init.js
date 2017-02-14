@@ -1,73 +1,48 @@
-var okHTML;
+var btnSearch;
 
-var map,liste_pos;
+var map;
 
 window.onload = init;
 
 
 function init(){
-    okHTML = document.getElementById("valider");
-    okHTML.addEventListener('click',position);
     initMap();
-
+    btnSearch = document.getElementById("btnSearch");
+    btnSearch.addEventListener('click', searchInternships);
+    
 }
+
 
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 2,
-    center:new google.maps.LatLng(0,0),
-});
+        zoom: 2,
+        center:new google.maps.LatLng(48.841014, 2.587320),
+    });
 }
 
 
 
-function position(e){
+function position(event){
 
-    e.preventDefault();
-    var xmin = document.getElementById("xmin").value;
-    console.log(xmin);
-    var xmax = document.getElementById("xmax").value;
-    var ymin = document.getElementById("ymin").value;
-    var ymax = document.getElementById("ymax").value;
+    // On empêche le comportement par défaut
+    event.preventDefault();
 
+    // Récupération des coordonnées du centre de la carte
+    var centerLat = map.getCenter().lat();
+    var centerLon = map.getCenter().lng();
 
-    var ajax = new XMLHttpRequest();
-    ajax.open('GET', 'tp_6_02.php?xmin=' + xmin + '&ymin='+ ymin+ '&xmax=' + xmax +'&ymax='+ymax, true);
-    ajax.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    ajax.addEventListener('readystatechange',    function(e) {
-            if(ajax.readyState == 4 && ajax.status == 200) {
-                result=ajax.responseText;
-                console.log(result);
-                monJson = JSON.parse(result);
-                //console.log(monJson);
-                //console.log(result);
-                liste_pos=[];
-                for(i=0; i<monJson.length; i++){
-                    var res='{ "latitude" : '+monJson[i].latitude+', "longitude" : '+monJson[i].longitude+'}'
-                    var res2= JSON.parse(res);
-                    var res3= new google.maps.LatLng(monJson[i].latitude, monJson[i].longitude);
-                    liste_pos.push(res3);}
-                    var markers = liste_pos.map(function(location, i) {
-                        return new google.maps.Marker({
-                            position: location,
-                            //label: labels[i % labels.length]
-                        });
-                    });
-                    var markerCluster = new MarkerClusterer(map, markers,
-                            {imagePath: 'm'
-                        });
-                }
-                    /*var myLatlng = new google.maps.LatLng(monJson[i].latitude,monJson[i].longitude);
-                    var tdt = new google.maps.Marker({
-                        position: myLatlng,
-                    });
+    
+    var request = new XMLHttpRequest();
 
-                    tdt.setMap(map);
-                }
-                console.log(liste_pos);*/
+    request.addEventListener('readystatechange',    function(e) {
+            if(request.readyState == 4 && request.status == 200) {
 
+                result = request.responseText;
+                internshipList = JSON.parse(result);
 
-            //on execute la requete
+            }
         });
-        ajax.send();
+
+        request.open('GET', 'server/get_internship.php?lat=' + centerLat + '&lon='+ centerLon, true);
+        request.send();
 }
