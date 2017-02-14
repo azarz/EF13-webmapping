@@ -7,3 +7,21 @@ html, body {
 #map { 
 	height: 100%; 
 }
+
+#searchDiv{
+	position: absolute;
+	z-index: 10;
+	left: 9px;
+	top: 100px;
+}
+
+#reticule{
+	position: absolute;
+	cursor: grab;
+	height: 19px;
+	z-index: 10;
+	left: 50%;
+	top: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+}

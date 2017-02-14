@@ -3,7 +3,7 @@
 	header("Content-Type: application/json; charset=UTF-8");
 	
 	// Lien vers la base de données postGIS en local
-	$link=pg_connect("host=localhost port=5432 dbname=internships user=postgres password=postgres");
+	$link = pg_connect("host=localhost port=5432 dbname=internships user=postgres password=postgres");
 	
 	if(!$link){
 		die('Erreur de connexion');
@@ -65,5 +65,3 @@
 	echo json_encode($tabOut);
 
 ?>
-
-
