@@ -51,14 +51,24 @@
 	// Notre sortie
 	$tabOut = array() ; 
 
-	// On commence par remplir avec les résultats plus proches
-	while($ligne = pg_fetch_object($resultNearest)) {
-		$tabOut[] = $ligne; 
+	// On commence par remplir avec les résultats plus proches, en convertissant le string du resultat en un type utilisable
+	while($ligne = pg_fetch_row($resultNearest)) {
+		$tabOut[] = array('id'=> intval($ligne[0]), 
+						  'lat'=> floatval($ligne[1]), 
+						  'lng'=> floatval($ligne[2]), 
+						  'lat_c'=>floatval($ligne[3]), 
+						  'lng_c'=>floatval($ligne[4])
+						  );
 	}
 
 	// Puis on remplit les résultats dans un rayon de 28km
-	while($ligne = pg_fetch_object($resultRadius)) {
-		$tabOut[] = $ligne; 
+	while($ligne = pg_fetch_row($resultRadius)) {
+		$tabOut[] = array('id'=> intval($ligne[0]), 
+						  'lat'=> floatval($ligne[1]), 
+						  'lng'=> floatval($ligne[2]), 
+						  'lat_c'=>floatval($ligne[3]), 
+						  'lng_c'=>floatval($ligne[4])
+						  );
 	}
 
 	// On écrit le résultat

@@ -1,10 +1,15 @@
 /******** Variables globales *******/
 
+// Éléments DOM
 var btnSearch;
+var btnSend;
 
+// Éléments cartographiques
 var map;
-var markers = [];
+var redMarkers = [];
+var blueMarkers = [];
 
+// Fonction au lancement de la fenêtre
 window.onload = init;
 
 
@@ -12,8 +17,12 @@ window.onload = init;
 
 function init(){
     initMap();
+    searchInternships();
     btnSearch = document.getElementById("btnSearch");
     btnSearch.addEventListener('click', searchInternships);
+
+    btnSend = document.getElementById("btnSend");
+    btnSend.addEventListener('click', sendPosition);
 }
 
 function initMap() {
@@ -21,7 +30,7 @@ function initMap() {
     Initalisation de la map, centrée sur l'ENSG
     */
     map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 3,
+        zoom: 10,
         center: new google.maps.LatLng(48.841014, 2.587320),
     });
 }
@@ -32,11 +41,13 @@ function initMap() {
 
 function searchInternships(event){
     /**
-    Recherche des stages en fonction de la position de recherche
+    Recherche des stages en fonction de la position de recherche, et ajout de marqueurs
     */
 
     // On empêche le comportement par défaut
-    event.preventDefault();
+    if(event){
+        event.preventDefault();
+    }
 
     // Récupération des coordonnées du centre de la carte
     var centerLat = map.getCenter().lat();
@@ -48,13 +59,80 @@ function searchInternships(event){
     request.addEventListener('readystatechange', function() {
             if(request.readyState == 4 && request.status == 200) {
 
+                // Récupération du JSON
                 result = request.responseText;
                 internshipList = JSON.parse(result);
-                console.log(internshipList);
+
+                // Suppression des précédents marqueurs
+                for (i = 0; i < redMarkers.length; i++){
+                    redMarkers[i].setMap(null);
+                    blueMarkers[i].setMap(null);
+                }
+                redMarkers = [];
+                blueMarkers = [];
+
+
+                // Définition des numéros des marqueurs
+                var labels = '123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                var labelIndex = 0;
+
+                // On parcourt la liste des résultats
+                for(i = 0; i < internshipList.length; i++){
+                    // Initialisation de la position des marqueurs
+                    var redLatLng = {lat: internshipList[i].lat, lng: internshipList[i].lng};
+                    var blueLatLng;
+
+                    // Si une position corrigée est disponible, on l'utilise pour le marqueur bleu
+                    if(internshipList[i].lat_c && internshipList[i].lng_c){
+                        blueLatLng = {lat: internshipList[i].lat_c, lng: internshipList[i].lng_c};
+                    // Sinon, on utilise la position d'origine
+                    } else{
+                        blueLatLng = {lat: internshipList[i].lat, lng: internshipList[i].lng};
+                    }
+
+                    // Numéro du marqueur
+                    var numero = labels[labelIndex++ % labels.length];
+
+                    // Définition des marqueurs et ajout à leur liste respective
+                    var redMarker = new google.maps.Marker({
+                        draggable: false,
+                        position: redLatLng,
+                        icon: {url: 'http://maps.google.com/mapfiles/ms/icons/red.png', labelOrigin: {x:15,y:10}},
+                        label: numero,
+                        map: map,
+                        zIndex: 4
+                    });
+
+                    redMarkers.push(redMarker);
+
+                    var blueMarker = new google.maps.Marker({
+                        draggable: true,
+                        position: blueLatLng,
+                        icon: {url: 'http://maps.google.com/mapfiles/ms/icons/blue.png', labelOrigin: {x:15,y:10}},
+                        label: numero,
+                        map: map,
+                        zIndex: 5
+                    });
+
+                    blueMarkers.push(blueMarker);
+                }
 
             }
         });
 
         request.open('GET', 'server/get_internship.php?lat=' + centerLat + '&lon='+ centerLon, true);
         request.send();
+}
+
+
+
+function sendPosition(event){
+    /**
+    Envoi des posistion corrigées des marqueurs bleus au serveur
+    */
+
+    // On empêche le comportement par défaut
+    event.preventDefault();
+
+    console.log(blueMarkers[0].getPosition().lat());
 }

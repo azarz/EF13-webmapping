@@ -15,6 +15,13 @@ html, body {
 	top: 100px;
 }
 
+#sendDiv{
+	position: absolute;
+	z-index: 10;
+	left: 9px;
+	top: 200px;
+}
+
 #reticule{
 	position: absolute;
 	cursor: grab;
