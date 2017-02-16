@@ -9,6 +9,9 @@ var map;
 var redMarkers = [];
 var blueMarkers = [];
 
+// Liste des identifiants des stages chargés
+var idList = [];
+
 // Fonction au lancement de la fenêtre
 window.onload = init;
 
@@ -70,6 +73,7 @@ function searchInternships(event){
                 }
                 redMarkers = [];
                 blueMarkers = [];
+                idList = [];
 
 
                 // Définition des numéros des marqueurs
@@ -115,11 +119,15 @@ function searchInternships(event){
                     });
 
                     blueMarkers.push(blueMarker);
+
+                    // Ajout de l'identifiant dans l'ordre de lecture
+                    idList.push(internshipList[i].id);
                 }
 
             }
         });
 
+        // On envoie la requête au serveur
         request.open('GET', 'server/get_internship.php?lat=' + centerLat + '&lon='+ centerLon, true);
         request.send();
 }
@@ -134,5 +142,26 @@ function sendPosition(event){
     // On empêche le comportement par défaut
     event.preventDefault();
 
-    console.log(blueMarkers[0].getPosition().lat());
+    // Tableau des nouvelles positions
+    var newPos = [];
+
+    // On le remplit avec des tableaux associatifs de coordonnées corrigées correspondant à un ID
+    for (i = 0; i < blueMarkers.length; i++){
+        var row = {id: idList[i], 
+                   lat_c: blueMarkers[i].getPosition().lat(),
+                   lng_c: blueMarkers[i].getPosition().lng()
+        };
+
+        newPos.push(row);
+    }
+
+    // On convertit en JSON
+    newPosJSON = JSON.stringify(newPos);
+
+    sendRequest = new XMLHttpRequest();
+
+    // On envoie la requpete au serveur
+    sendRequest.open('POST', 'server/update_db.php', true);
+    sendRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    sendRequest.send("data=" + newPosJSON);
 }
