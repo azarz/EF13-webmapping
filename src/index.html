@@ -14,19 +14,26 @@
         <body>
                 <div id="map"></div>
 
-                <div id="searchDiv">
-                        <form>
-                                <input id="btnSearch" type="submit" value="Rechercher stages">
-                        </form>
+                <div id="panel">
+                        <div id="legend">
+                                <p><img src="http://maps.google.com/mapfiles/ms/icons/red.png" alt="marqueur rouge"> géométrie d'origine, fixe.</p>
+                                <p><img src="http://maps.google.com/mapfiles/ms/icons/blue.png" alt="marqueur bleu"> géométrie corrigée, mobile.</p>
+                                <p><img src="img/reticule.gif" alt="réticule" id="retLegend">réticule de recherche</p>
+                        </div>
+                        <div id="searchDiv">
+                                <form>
+                                        <input id="btnSearch" type="submit" value="Rechercher stages">
+                                </form>
+                        </div>
+
+                        <div id="sendDiv">
+                                <form>
+                                        <input id="btnSend" type="submit" value="Valider modification">
+                                </form>
+                        </div>
                 </div>
 
-                <div id="sendDiv">
-                        <form>
-                                <input id="btnSend" type="submit" value="Valider modification">
-                        </form>
-                </div>
-
-                <div id="reticule"><img src="img/reticule.gif"></div>
+                <div id="reticule"><img src="img/reticule.gif" alt="réticule"></div>
         </body>
 
 </html>

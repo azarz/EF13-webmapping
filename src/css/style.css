@@ -8,18 +8,33 @@ html, body {
 	height: 100%; 
 }
 
-#searchDiv{
+#panel{
 	position: absolute;
 	z-index: 10;
-	left: 9px;
-	top: 100px;
+	right: 1px;
+	top: 0;
+	background-color: rgba(200,200,200,0.8);
+	height: 250px;
+	width: 250px;
+	border: 1px solid black;
+	border-radius: 8px;
+	
+	font-family: Calibri;
 }
 
-#sendDiv{
-	position: absolute;
-	z-index: 10;
-	left: 9px;
-	top: 200px;
+#panel form{
+	padding: 10px;
+	text-align: center
+}
+
+#retLegend{
+	padding-right: 9px;
+	padding-left: 7px;
+}
+
+#panel img{
+  transform: translateY(30%);
+  -webkit-transform: translateY(30%);
 }
 
 #reticule{
