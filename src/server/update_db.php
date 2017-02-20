@@ -21,5 +21,11 @@
 					WHERE id = $id";
 
 		$result = pg_query($link, $request);
+
+		if(!$result) { 
+			die('Erreur de requête'); 
+		}
+
+		echo 'mise à jour OK';
 	}
 ?>

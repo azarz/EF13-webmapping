@@ -63,74 +63,74 @@ function searchInternships(event){
     var request = new XMLHttpRequest();
 
     request.addEventListener('readystatechange', function() {
-            if(request.readyState == 4 && request.status == 200) {
+        if(request.readyState == 4 && request.status == 200) {
 
-                // Récupération du JSON
-                result = request.responseText;
-                internshipList = JSON.parse(result);
+            // Récupération du JSON
+            result = request.responseText;
+            internshipList = JSON.parse(result);
 
-                // Suppression des précédents marqueurs
-                for (i = 0; i < redMarkers.length; i++){
-                    redMarkers[i].setMap(null);
-                    blueMarkers[i].setMap(null);
-                }
-                redMarkers = [];
-                blueMarkers = [];
-                idList = [];
+            // Suppression des précédents marqueurs
+            for (i = 0; i < redMarkers.length; i++){
+                redMarkers[i].setMap(null);
+                blueMarkers[i].setMap(null);
+            }
+            redMarkers = [];
+            blueMarkers = [];
+            idList = [];
 
 
-                // Définition des numéros des marqueurs
-                var labels = '123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                var labelIndex = 0;
+            // Définition des numéros des marqueurs
+            var labels = '123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            var labelIndex = 0;
 
-                // On parcourt la liste des résultats
-                for(i = 0; i < internshipList.length; i++){
-                    // Initialisation de la position des marqueurs
-                    var redLatLng = {lat: internshipList[i].lat, lng: internshipList[i].lng};
-                    var blueLatLng;
+            // On parcourt la liste des résultats
+            for(i = 0; i < internshipList.length; i++){
+                // Initialisation de la position des marqueurs
+                var redLatLng = {lat: internshipList[i].lat, lng: internshipList[i].lng};
+                var blueLatLng;
 
-                    // Si une position corrigée est disponible, on l'utilise pour le marqueur bleu
-                    if(internshipList[i].lat_c && internshipList[i].lng_c){
-                        blueLatLng = {lat: internshipList[i].lat_c, lng: internshipList[i].lng_c};
-                    // Sinon, on utilise la position d'origine
-                    } else{
-                        blueLatLng = {lat: internshipList[i].lat, lng: internshipList[i].lng};
-                    }
-
-                    // Numéro du marqueur
-                    var numero = labels[labelIndex++ % labels.length];
-
-                    // Définition des marqueurs et ajout à leur liste respective
-                    var redMarker = new google.maps.Marker({
-                        draggable: false,
-                        position: redLatLng,
-                        icon: {url: 'http://maps.google.com/mapfiles/ms/icons/red.png', labelOrigin: {x:15,y:10}},
-                        label: numero,
-                        map: map,
-                        zIndex: 4
-                    });
-
-                    redMarkers.push(redMarker);
-                    oms.addMarker(redMarker);
-
-                    var blueMarker = new google.maps.Marker({
-                        draggable: true,
-                        position: blueLatLng,
-                        icon: {url: 'http://maps.google.com/mapfiles/ms/icons/blue.png', labelOrigin: {x:15,y:10}},
-                        label: numero,
-                        map: map,
-                        zIndex: 5
-                    });
-
-                    blueMarkers.push(blueMarker);
-                    oms.addMarker(blueMarker);
-
-                    // Ajout de l'identifiant dans l'ordre de lecture
-                    idList.push(internshipList[i].id);
+                // Si une position corrigée est disponible, on l'utilise pour le marqueur bleu
+                if(internshipList[i].lat_c && internshipList[i].lng_c){
+                    blueLatLng = {lat: internshipList[i].lat_c, lng: internshipList[i].lng_c};
+                // Sinon, on utilise la position d'origine
+                } else{
+                    blueLatLng = {lat: internshipList[i].lat, lng: internshipList[i].lng};
                 }
 
-            } 
-        });
+                // Numéro du marqueur
+                var numero = labels[labelIndex++ % labels.length];
+
+                // Définition des marqueurs et ajout à leur liste respective
+                var redMarker = new google.maps.Marker({
+                    draggable: false,
+                    position: redLatLng,
+                    icon: {url: 'http://maps.google.com/mapfiles/ms/icons/red.png', labelOrigin: {x:15,y:10}},
+                    label: numero,
+                    map: map,
+                    zIndex: 4
+                });
+
+                redMarkers.push(redMarker);
+                oms.addMarker(redMarker);
+
+                var blueMarker = new google.maps.Marker({
+                    draggable: true,
+                    position: blueLatLng,
+                    icon: {url: 'http://maps.google.com/mapfiles/ms/icons/blue.png', labelOrigin: {x:15,y:10}},
+                    label: numero,
+                    map: map,
+                    zIndex: 5
+                });
+
+                blueMarkers.push(blueMarker);
+                oms.addMarker(blueMarker);
+
+                // Ajout de l'identifiant dans l'ordre de lecture
+                idList.push(internshipList[i].id);
+            }
+
+        } 
+    });
 
         // On envoie la requête au serveur
         request.open('GET', 'server/get_internship.php?lat=' + centerLat + '&lon='+ centerLon, true);
@@ -164,6 +164,13 @@ function sendPosition(event){
     newPosJSON = JSON.stringify(newPos);
 
     sendRequest = new XMLHttpRequest();
+
+    // On prévient losque la mise à jour est terminée
+    sendRequest.addEventListener('readystatechange', function(){
+        if(sendRequest.readyState == 4 && sendRequest.status == 200){
+            alert('Modification enregistrée')
+        }
+    });
 
     // On envoie la requpete au serveur
     sendRequest.open('POST', 'server/update_db.php', true);
