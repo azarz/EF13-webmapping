@@ -147,6 +147,9 @@ function sendPosition(event){
     // On empêche le comportement par défaut
     event.preventDefault();
 
+    // On remet les éventuels marquers bleus "spiderifiés" à leur position normale
+    oms.unspiderfy()
+
     // Tableau des nouvelles positions
     var newPos = [];
 
