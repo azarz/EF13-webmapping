@@ -6,6 +6,7 @@ var btnSend;
 
 // Éléments cartographiques
 var map;
+var oms;    //Pour la gestion des stages au même endroit
 var redMarkers = [];
 var blueMarkers = [];
 
@@ -33,9 +34,11 @@ function initMap() {
     Initalisation de la map, centrée sur l'ENSG
     */
     map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 10,
+        zoom: 12,
         center: new google.maps.LatLng(48.841014, 2.587320),
     });
+
+    oms = new OverlappingMarkerSpiderfier(map);
 }
 
 
@@ -108,6 +111,7 @@ function searchInternships(event){
                     });
 
                     redMarkers.push(redMarker);
+                    oms.addMarker(redMarker);
 
                     var blueMarker = new google.maps.Marker({
                         draggable: true,
@@ -119,12 +123,13 @@ function searchInternships(event){
                     });
 
                     blueMarkers.push(blueMarker);
+                    oms.addMarker(blueMarker);
 
                     // Ajout de l'identifiant dans l'ordre de lecture
                     idList.push(internshipList[i].id);
                 }
 
-            }
+            } 
         });
 
         // On envoie la requête au serveur
