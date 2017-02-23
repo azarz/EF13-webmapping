@@ -107,7 +107,7 @@ function searchInternships(event){
                     icon: {url: 'http://maps.google.com/mapfiles/ms/icons/red.png', labelOrigin: {x:15,y:10}},
                     label: numero,
                     map: map,
-                    zIndex: 4
+                    zIndex: 4 + labelIndex
                 });
 
                 redMarkers.push(redMarker);
@@ -119,7 +119,7 @@ function searchInternships(event){
                     icon: {url: 'http://maps.google.com/mapfiles/ms/icons/blue.png', labelOrigin: {x:15,y:10}},
                     label: numero,
                     map: map,
-                    zIndex: 5
+                    zIndex: 34 + labelIndex
                 });
 
                 blueMarkers.push(blueMarker);
