@@ -1,4 +1,7 @@
 <?php
+
+	// Nom de la table dans la BDD
+	$table_name = "internships";
 	
 	// Récupération de la donnée envoyée par le client
 	$newDataJSON = pg_escape_string($_POST["data"]);
@@ -16,7 +19,7 @@
 		$lat_c = $dataRow['lat_c'];
 		$lng_c = $dataRow['lng_c'];
 		$id = $dataRow['id'];
-		$request = "UPDATE internships
+		$request = "UPDATE $table_name
 					SET lat_c = $lat_c, lng_c = $lng_c
 					WHERE id = $id";
 

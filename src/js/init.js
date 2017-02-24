@@ -20,6 +20,9 @@ window.onload = init;
 /************ Initialisation de la page ****************/
 
 function init(){
+    /**
+    Initialisation de la fenêtre
+    */
     initMap();
     searchInternships();
     btnSearch = document.getElementById("btnSearch");
@@ -38,6 +41,7 @@ function initMap() {
         center: new google.maps.LatLng(48.841014, 2.587320),
     });
 
+    // On initialise l'instance de gestion de marqueurs superposés
     oms = new OverlappingMarkerSpiderfier(map);
 }
 
@@ -110,6 +114,7 @@ function searchInternships(event){
                     zIndex: 4 + labelIndex
                 });
 
+                // On ajoute le marqueur à la liste des marqueurs et à la gestion de superposition
                 redMarkers.push(redMarker);
                 oms.addMarker(redMarker);
 
@@ -122,6 +127,7 @@ function searchInternships(event){
                     zIndex: 34 + labelIndex
                 });
 
+                // On ajoute le marqueur à la liste des marqueurs et à la gestion de superposition
                 blueMarkers.push(blueMarker);
                 oms.addMarker(blueMarker);
 
@@ -132,9 +138,9 @@ function searchInternships(event){
         } 
     });
 
-        // On envoie la requête au serveur
-        request.open('GET', 'server/get_internship.php?lat=' + centerLat + '&lon='+ centerLon, true);
-        request.send();
+    // On envoie la requête au serveur
+    request.open('GET', 'server/get_internship.php?lat=' + centerLat + '&lon='+ centerLon, true);
+    request.send();
 }
 
 

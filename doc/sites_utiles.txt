@@ -1,2 +1,0 @@
-pour les marqueurs au même endroit
-https://github.com/jawj/OverlappingMarkerSpiderfier

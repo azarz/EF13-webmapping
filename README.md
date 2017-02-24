@@ -1,5 +1,6 @@
-#Micro-projet webmapping, sujet EF13
+﻿#Micro-projet webmapping, sujet EF13
 #Carte des stages - interface de séparation des superpositions
+
 
 ##Prérequis
 + Un serveur PostGreSQL muni de PostGIS, dont l'adresse est à rentrer dans les fichiers PHP dans la fonction pg_connect(), contenant une base de données nommée internships (nom pouvant être changé dans les fichiers PHP, au début, dans la fonction pg_connect())
@@ -21,4 +22,6 @@
 + Pour valider le déplacement des marqueurs bleus, on clique sur le bouton "Valider modification" situé dans le panneau en haut à droite. Cela a pour effet de transmettre les nouvelles positions au serveur de base de données.
 
 ###Capture d'écran de l'interface
-![doc/capture.png](doc/capture.png "Capture d'écran")
+![doc/img/capture.png](doc/capture.png "Capture d'écran")
+
+##La documentation précise est située dans le dossier doc

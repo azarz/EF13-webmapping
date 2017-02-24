@@ -1,6 +1,9 @@
 <?php
 
 	header("Content-Type: application/json; charset=UTF-8");
+
+	// Nom de la table dans la BDD
+	$table_name = "internships";
 	
 	// Lien vers la base de données postGIS en local
 	$link = pg_connect("host=localhost port=5432 dbname=internships user=postgres password=postgres");
@@ -19,7 +22,7 @@
 	Requête pour les 2 stages les plus proches du lieu de recherche, contient toujours 2 résultats
 	*/
 	$requestNearest = "SELECT id, lat, lng, lat_c, lng_c
-			FROM internships  
+			FROM $table_name  
 			ORDER BY ST_Distance( ST_SetSRID(ST_MakePoint(lng, lat), 4326), ST_SetSRID(ST_MakePoint($lon_r, $lat_r), 4326) ) ASC 
 			LIMIT 2";
 
@@ -36,7 +39,7 @@
 	Ce qui correspond à peu près à 28 km car 1° correspond à 111 km à l'équateur et 28*4 = 112
 	*/
 	$requestRadius = "SELECT id, lat, lng, lat_c, lng_c
-				FROM internships 
+				FROM $table_name 
 				WHERE ST_DWithin( ST_SetSRID(ST_MakePoint(lng, lat), 4326), ST_SetSRID(ST_MakePoint($lon_r, $lat_r), 4326), 0.25) 
 				ORDER BY ST_Distance( ST_SetSRID(ST_MakePoint(lng, lat), 4326), ST_SetSRID(ST_MakePoint($lon_r, $lat_r), 4326) ) ASC 
 				LIMIT 28 OFFSET 2";
