@@ -154,7 +154,7 @@ function sendPosition(event){
     event.preventDefault();
 
     // On remet les éventuels marquers bleus "spiderifiés" à leur position normale
-    oms.unspiderfy()
+    oms.unspiderfy();
 
     // Tableau des nouvelles positions
     var newPos = [];
@@ -177,7 +177,7 @@ function sendPosition(event){
     // On prévient losque la mise à jour est terminée
     sendRequest.addEventListener('readystatechange', function(){
         if(sendRequest.readyState == 4 && sendRequest.status == 200){
-            alert('Modification enregistrée')
+            alert('Modification enregistrée');
         }
     });
 

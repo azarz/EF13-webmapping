@@ -19,7 +19,7 @@
 
 
 	/**
-	Requête pour les 2 stages les plus proches du lieu de recherche, contient toujours 2 résultats
+	Requête pour les 2 stages les plus proches du lieu de recherche, contient >oujours 2 résultats
 	*/
 	$requestNearest = "SELECT id, lat, lng, lat_c, lng_c
 			FROM $table_name  
